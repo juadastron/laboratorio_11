@@ -3,10 +3,10 @@ name: pytest
 on:
   push:
     branches:
-      - main  # Cambia 'main' por el nombre de tu rama principal si es diferente
+      - main
   pull_request:
     branches:
-      - main  # Cambia 'main' por la rama principal si es diferente
+      - main
 
 jobs:
   test:
@@ -19,7 +19,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v2
       with:
-        python-version: '3' 
+        python-version: '3.x'
 
     - name: Install dependencies
       run: |
@@ -29,3 +29,12 @@ jobs:
     - name: Run pytest
       run: |
         pytest
+
+    - name: Notify Slack on failure
+      if: ${{ failure() }}
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      run: |
+        curl -X POST -H 'Content-type: application/json' --data '{
+          "text": "Hubo un problema en la ejecución de pruebas en GitHub Actions. Revisa los detalles en [nombre_del_repositorio]."
+        }' $SLACK_WEBHOOK_URL
