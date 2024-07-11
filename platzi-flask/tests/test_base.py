@@ -1,7 +1,8 @@
 from flask_testing import TestCase
 from flask import current_app, url_for
 #Se importa la aplicacion de Flask
-from main import app
+
+from ..main import app
 
 class MainTest(TestCase):
     # Se implementa el metodo create_app que vive en la clase TestCase y tiene que regresar una aplicacion de Flask
